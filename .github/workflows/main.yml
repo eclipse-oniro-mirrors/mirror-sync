@@ -9,7 +9,7 @@ jobs:
   repo-sync:
     env:
       dst_token: ${{ secrets.TOKEN }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 1380
     steps:
       - uses: Yikun/hub-mirror-action@master
@@ -21,6 +21,7 @@ jobs:
           src_account_type: org
           dst_account_type: user
           force_update: true
+          white_list: "manifest"
           black_list: "developtools_profiler,developtools_smartperf_host,device_soc_rockchip,global_i18n,multimedia_av_codec,third_party_llvm-project,third_party_mindspore,third_party_vk-gl-cts,update_updater"
           lfs: true
           timeout: '30m'
