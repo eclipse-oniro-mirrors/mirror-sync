@@ -1,10 +1,17 @@
 name: Mirror OpenHarmony from gitee to GitHub
 on:
+  # for testing purposes also enable manual triggering
+  workflow_dispatch:
   push:
     branches:
       - main
   schedule:
     - cron: '0 12 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   repo-sync:
     env:
