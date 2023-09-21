@@ -16,7 +16,7 @@ jobs:
   repo-sync:
     env:
       dst_token: ${{ secrets.TOKEN }}
-    runs-on: ubuntu-latest
+    runs-on: mirror-runner
     timeout-minutes: 1380
     steps:
       - uses: Yikun/hub-mirror-action@master
