@@ -13,13 +13,72 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  repo-sync:
+  get-repo-list:
     env:
       dst_token: ${{ secrets.TOKEN }}
     runs-on: mirror-runner
-    timeout-minutes: 1380
+    outputs:
+      output1: ${{ steps.list1.outputs.repo_list1 }}
+      output2: ${{ steps.list2.outputs.repo_list2 }}
+      output3: ${{ steps.list3.outputs.repo_list3 }}
+      output4: ${{ steps.list4.outputs.repo_list4 }}
+      output5: ${{ steps.list5.outputs.repo_list5 }}
+      output6: ${{ steps.list6.outputs.repo_list6 }}
+      output7: ${{ steps.list7.outputs.repo_list7 }}
+      output8: ${{ steps.list8.outputs.repo_list8 }}
     steps:
-      - uses: Yikun/hub-mirror-action@master
+      - uses: Stefan-Schmidt/hub-mirror-action@master
+        id: list
+        with:
+          src: gitee/openharmony
+          dst: github/eclipse-oniro-mirrors
+          dst_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          dst_token: ${{ secrets.TOKEN }}
+          src_account_type: org
+          dst_account_type: org
+          list_only: true
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v4
+      - name: Split list into chunks
+        run: echo ${{ steps.list.outputs.repo_list }} | .github/workflows/split-list.py
+      - name: Print out list 1
+        id: list1
+        run: echo "repo_list1=$(cat repo_list1.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 2
+        id: list2
+        run: echo "repo_list2=$(cat repo_list2.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 3
+        id: list3
+        run: echo "repo_list3=$(cat repo_list3.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 4
+        id: list4
+        run: echo "repo_list4=$(cat repo_list4.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 5
+        id: list5
+        run: echo "repo_list5=$(cat repo_list5.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 6
+        id: list6
+        run: echo "repo_list6=$(cat repo_list6.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 7
+        id: list7
+        run: echo "repo_list7=$(cat repo_list7.txt)" >> $GITHUB_OUTPUT
+      - name: Print out list 8
+        id: list8
+        run: echo "repo_list8=$(cat repo_list8.txt)" >> $GITHUB_OUTPUT
+
+  sync-repos:
+    strategy:
+      matrix:
+        chunk: ['${{ needs.get-repo-list.outputs.output1 }}', '${{ needs.get-repo-list.outputs.output2 }}', '${{ needs.get-repo-list.outputs.output3 }}', '${{ needs.get-repo-list.outputs.output4 }}', '${{ needs.get-repo-list.outputs.output5 }}', '${{ needs.get-repo-list.outputs.output6 }}', '${{ needs.get-repo-list.outputs.output7 }}', '${{ needs.get-repo-list.outputs.output8 }}']
+    env:
+      dst_token: ${{ secrets.TOKEN }}
+    runs-on: mirror-runner
+    needs: get-repo-list
+    steps:
+      - name: Test env
+        run: |
+          echo ${{ matrix.chunk }}
+      - uses: Stefan-Schmidt/hub-mirror-action@master
         with:
           src: gitee/openharmony
           dst: github/eclipse-oniro-mirrors
@@ -28,6 +87,7 @@ jobs:
           src_account_type: org
           dst_account_type: org
           force_update: true
-          black_list: "developtools_profiler,developtools_smartperf_host,device_soc_rockchip,global_i18n,multimedia_av_codec,third_party_llvm-project,third_party_mindspore,third_party_vk-gl-cts,update_updater"
+          static_list: "${{ matrix.chunk }}"
+          black_list: "developtools_profiler,developtools_smartperf_host,device_board_hihope,device_soc_rockchip,global_i18n,multimedia_av_codec,third_party_llvm-project,third_party_mindspore,third_party_vk-gl-cts,update_updater,xts_acts,docs"
           lfs: true
           timeout: '30m'
