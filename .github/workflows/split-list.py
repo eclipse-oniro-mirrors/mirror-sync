@@ -10,6 +10,8 @@ lst = iput.split(",")
 lst.remove("hiviewdfx_hisysevent")
 # Remove hiviewdfx_hitrace as a clone of this repo can take up to 5h
 lst.remove("hiviewdfx_hitrace")
+# Remove hiviewdfx_hiview as the creation of this repo can take up to 4.5h
+lst.remove("hiviewdfx_hiview")
 
 chunks = 8
 n = 1
