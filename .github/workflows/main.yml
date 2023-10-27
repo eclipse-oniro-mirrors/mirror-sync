@@ -36,7 +36,10 @@ jobs:
           dst_token: ${{ secrets.TOKEN }}
           src_account_type: org
           dst_account_type: org
-          list_only: true
+          static_list: "docs,xts_acts"
+          debug: true
+          lfs: true
+          timeout: '60m'
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
       - name: Split list into chunks
