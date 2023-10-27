@@ -38,7 +38,7 @@ jobs:
           dst_account_type: org
           static_list: "docs,xts_acts"
           debug: true
-          lfs: true
+          lfs: false
           timeout: '60m'
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
