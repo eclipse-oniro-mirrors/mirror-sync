@@ -37,6 +37,7 @@ jobs:
           src_account_type: org
           dst_account_type: org
           static_list: "docs"
+          force_update: true
           debug: true
           lfs: false
           timeout: '2h'
