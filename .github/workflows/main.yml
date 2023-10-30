@@ -36,7 +36,7 @@ jobs:
           dst_token: ${{ secrets.TOKEN }}
           src_account_type: org
           dst_account_type: org
-          static_list: "docs"
+          static_list: "xts_acts"
           force_update: true
           debug: true
           lfs: false
