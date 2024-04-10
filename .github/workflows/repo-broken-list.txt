@@ -1,0 +1,2 @@
+kernel_linux_4.19,kernel_linux_5.10,multimedia_av_codec,developtools_profiler,developtools_smartperf_host,device_board_hihope,device_soc_rockchip,global_i18n,third_party_llvm-project,third_party_mindspore,third_party_vk-gl-cts,update_updater,xts_acts,docs,codelabs,third_party_noto-cjk,third_party_typescript,kernel_linux
+
