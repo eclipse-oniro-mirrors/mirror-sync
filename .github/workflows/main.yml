@@ -88,6 +88,6 @@ jobs:
           dst_account_type: org
           force_update: true
           static_list: "${{ matrix.chunk }}"
-          black_list: "developtools_profiler,developtools_smartperf_host,device_board_hihope,device_soc_rockchip,global_i18n,multimedia_av_codec,third_party_llvm-project,third_party_mindspore,third_party_vk-gl-cts,update_updater,xts_acts,docs"
+          black_list: "developtools_profiler,developtools_smartperf_host,device_board_hihope,device_soc_rockchip,global_i18n,multimedia_av_codec,third_party_llvm-project,third_party_mindspore,third_party_vk-gl-cts,update_updater,xts_acts,docs,codelabs"
           lfs: true
           timeout: '30m'
