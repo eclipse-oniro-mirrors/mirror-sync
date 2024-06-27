@@ -36,6 +36,7 @@ jobs:
           dst_token: ${{ secrets.TOKEN }}
           src_account_type: org
           dst_account_type: org
+          debug: true
           list_only: true
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
