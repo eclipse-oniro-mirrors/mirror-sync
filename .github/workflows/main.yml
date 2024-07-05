@@ -27,20 +27,10 @@ jobs:
       output7: ${{ steps.list7.outputs.repo_list7 }}
       output8: ${{ steps.list8.outputs.repo_list8 }}
     steps:
-      - uses: Stefan-Schmidt/hub-mirror-action@master
-        id: list
-        with:
-          src: gitee/openharmony
-          dst: github/eclipse-oniro-mirrors
-          dst_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          dst_token: ${{ secrets.TOKEN }}
-          src_account_type: org
-          dst_account_type: org
-          list_only: true
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
       - name: Split list into chunks
-        run: echo ${{ steps.list.outputs.repo_list }} | .github/workflows/split-list.py
+        run: cat .github/workflows/repo-list.txt | .github/workflows/split-list.py
       - name: Print out list 1
         id: list1
         run: echo "repo_list1=$(cat repo_list1.txt)" >> $GITHUB_OUTPUT
