@@ -40,9 +40,10 @@ lst.remove("xts_acts")
 #lst.remove("")
 #lst.remove("")
 
-chunks = 8
+chunks = 10
 n = 1
 size = ceil(len(lst) / chunks)
+print("%d chunks with a chunks size of %d" %(chunks, size))
 
 while lst:
     chunk, lst = lst[:size], lst[size:]
