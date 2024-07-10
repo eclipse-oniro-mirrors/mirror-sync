@@ -22,6 +22,8 @@ lst.remove("multimedia_av_codec")
 lst.remove("kernel_linux_5.10")
 lst.remove("third_party_llvm-project")
 lst.remove("kernel_linux_4.19")
+lst.remove("kernel_linux")
+lst.remove("third_party_typescript")
 
 # send-pack: unexpected disconnect while reading sideband packet
 lst.remove("third_party_vk-gl-cts")
@@ -35,9 +37,8 @@ lst.remove("third_party_noto-cjk")
 # LFS upload to github failed
 lst.remove("xts_acts")
 
-#lst.remove("")
-#lst.remove("")
-#lst.remove("")
+# Timeout gitee clone
+lst.remove("docs")
 #lst.remove("")
 
 chunks = 10
