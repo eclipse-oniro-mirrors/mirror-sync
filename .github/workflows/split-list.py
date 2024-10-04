@@ -13,6 +13,7 @@ lst.remove("developtools_smartperf_host")
 lst.remove("device_soc_rockchip")
 lst.remove("global_i18n")
 lst.remove("third_party_mindspore")
+lst.remove("multimedia_audio_framework")
 
 # error: GH008: Your push referenced at least 1 unknown Git LFS object
 lst.remove("device_board_hihope")
