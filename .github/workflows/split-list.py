@@ -21,9 +21,6 @@ lst.remove("device_board_hihope")
 # curl 92 HTTP/2 stream 5 was not closed cleanly: INTERNAL_ERROR (err 2)
 lst.remove("multimedia_av_codec")
 lst.remove("kernel_linux_5.10")
-lst.remove("third_party_llvm-project")
-lst.remove("kernel_linux_4.19")
-lst.remove("kernel_linux")
 lst.remove("third_party_typescript")
 
 # send-pack: unexpected disconnect while reading sideband packet
