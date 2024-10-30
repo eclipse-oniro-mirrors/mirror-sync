@@ -38,6 +38,9 @@ lst.remove("xts_acts")
 # Timeout gitee clone
 lst.remove("docs")
 
+# fatal: pack exceeds maximum allowed size (2.00 GiB)   
+lst.remove("kernel_linux_6.6")
+
 chunks = 10
 n = 1
 size = ceil(len(lst) / chunks)
