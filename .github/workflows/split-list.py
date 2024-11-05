@@ -2,6 +2,7 @@
 
 from math import ceil
 import sys
+import random
 
 iput = sys.stdin.read()
 
@@ -45,6 +46,8 @@ chunks = 10
 n = 1
 size = ceil(len(lst) / chunks)
 print("%d chunks with a chunks size of %d" %(chunks, size))
+
+random.shuffle(lst) # shuffle the list to better distribute the workload between the chunks
 
 while lst:
     chunk, lst = lst[:size], lst[size:]
