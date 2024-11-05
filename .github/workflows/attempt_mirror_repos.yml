@@ -1,6 +1,11 @@
 name: Attempt to mirror problematic repositories
 
 on:
+  # for testing purposes also enable manual triggering
+  workflow_dispatch:
+  push:
+    branches:
+      - main
   # Schedule the workflow to run every day at midnight
   schedule:
     - cron: '0 0 * * *'
