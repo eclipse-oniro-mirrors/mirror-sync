@@ -1,0 +1,35 @@
+name: Attempt to mirror problematic repositories
+
+on:
+  # Schedule the workflow to run every day at midnight
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  # Use a matrix strategy to sync multiple repositories in parallel
+  sync-repos:
+    runs-on: mirror-runner
+    strategy:
+      matrix:
+        repo:  # List of repositories to sync
+          - device_board_hihope
+          - kernel_linux_5_10
+          - third_party_typescript
+          - third_party_noto-cjk
+          - docs
+          - multimedia_av_codec
+    continue-on-error: true  # Continue the workflow even if one job fails
+    steps:
+      - name: Sync ${{ matrix.repo }}  # Step name dynamically based on the repository being synced
+        uses: Stefan-Schmidt/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
+        with:
+          src: gitee/openharmony  # Source organization on Gitee
+          dst: github/eclipse-oniro-mirrors  # Destination organization on GitHub
+          static_list: ${{ matrix.repo }}  # Static list specifying the repository to sync
+          dst_key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key for authentication
+          dst_token: ${{ secrets.TOKEN }}  # Access token for the destination GitHub repository
+          src_account_type: org  # Source account type is an organization
+          dst_account_type: org  # Destination account type is an organization
+          force_update: true  # Force update the destination repository
+          lfs: true  # Enable Git LFS (Large File Storage) for the repository
+          timeout: '60m'  # Set timeout for the sync operation to 60 minutes
