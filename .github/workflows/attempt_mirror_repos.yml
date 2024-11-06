@@ -6,9 +6,6 @@ on:
   push:
     branches:
       - main
-  # Schedule the workflow to run every day at midnight
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   # Use a matrix strategy to sync multiple repositories in parallel
@@ -18,11 +15,11 @@ jobs:
       matrix:
         repo:  # List of repositories to sync
           - device_board_hihope
-          - kernel_linux_5.10
-          - third_party_typescript
-          - third_party_noto-cjk
           - docs
-          - multimedia_av_codec
+          - third_party_vk-gl-cts
+          - update_updater
+          - xts_acts
+          - kernel_linux_6.6
     continue-on-error: true  # Continue the workflow even if one job fails
     steps:
       - name: Sync ${{ matrix.repo }}  # Step name dynamically based on the repository being synced
