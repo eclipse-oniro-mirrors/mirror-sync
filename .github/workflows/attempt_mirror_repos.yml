@@ -18,7 +18,7 @@ jobs:
       matrix:
         repo:  # List of repositories to sync
           - device_board_hihope
-          - kernel_linux_5_10
+          - kernel_linux_5.10
           - third_party_typescript
           - third_party_noto-cjk
           - docs
