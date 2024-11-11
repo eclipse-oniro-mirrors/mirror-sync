@@ -24,7 +24,7 @@ jobs:
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
       - name: Split list into chunks
-        run: cat .github/workflows/repo-list.txt | .github/workflows/split-list.py
+        run: cat .github/workflows/repo-list.txt | .github/workflows/split-list.py ${{ env.parallel_jobs }}
       - name: Set outputs dynamically
         id: set-outputs
         run: |

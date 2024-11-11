@@ -4,6 +4,18 @@ from math import ceil
 import sys
 import random
 
+if len(sys.argv) < 2:
+    print("Usage: {} <number_of_chunks>".format(sys.argv[0]))
+    sys.exit(1)
+
+try:
+    chunks = int(sys.argv[1])
+    if chunks <= 0:
+        raise ValueError("Number of chunks must be greater than zero.")
+except ValueError as e:
+    print("Error: {}".format(e))
+    sys.exit(1)
+
 iput = sys.stdin.read()
 
 lst = iput.split(",")
@@ -35,10 +47,9 @@ lst.remove("docs")
 # fatal: pack exceeds maximum allowed size (2.00 GiB)   
 lst.remove("kernel_linux_6.6")
 
-chunks = 10
 n = 1
 size = ceil(len(lst) / chunks)
-print("%d chunks with a chunks size of %d" %(chunks, size))
+print("%d chunks with a chunk size of %d" % (chunks, size))
 
 random.shuffle(lst) # shuffle the list to better distribute the workload between the chunks
 
