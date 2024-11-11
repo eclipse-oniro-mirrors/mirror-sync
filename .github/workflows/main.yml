@@ -18,56 +18,27 @@ jobs:
       dst_token: ${{ secrets.TOKEN }}
     runs-on: mirror-runner
     outputs:
-      output1: ${{ steps.list1.outputs.repo_list1 }}
-      output2: ${{ steps.list2.outputs.repo_list2 }}
-      output3: ${{ steps.list3.outputs.repo_list3 }}
-      output4: ${{ steps.list4.outputs.repo_list4 }}
-      output5: ${{ steps.list5.outputs.repo_list5 }}
-      output6: ${{ steps.list6.outputs.repo_list6 }}
-      output7: ${{ steps.list7.outputs.repo_list7 }}
-      output8: ${{ steps.list8.outputs.repo_list8 }}
-      output9: ${{ steps.list9.outputs.repo_list9 }}
-      output10: ${{ steps.list10.outputs.repo_list10 }}
+      repo_lists: ${{ steps.set-outputs.outputs.repo_lists }}
     steps:
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
       - name: Split list into chunks
         run: cat .github/workflows/repo-list.txt | .github/workflows/split-list.py
-      - name: Print out list 1
-        id: list1
-        run: echo "repo_list1=$(cat repo_list1.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 2
-        id: list2
-        run: echo "repo_list2=$(cat repo_list2.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 3
-        id: list3
-        run: echo "repo_list3=$(cat repo_list3.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 4
-        id: list4
-        run: echo "repo_list4=$(cat repo_list4.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 5
-        id: list5
-        run: echo "repo_list5=$(cat repo_list5.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 6
-        id: list6
-        run: echo "repo_list6=$(cat repo_list6.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 7
-        id: list7
-        run: echo "repo_list7=$(cat repo_list7.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 8
-        id: list8
-        run: echo "repo_list8=$(cat repo_list8.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 9
-        id: list9
-        run: echo "repo_list9=$(cat repo_list9.txt)" >> $GITHUB_OUTPUT
-      - name: Print out list 10
-        id: list10
-        run: echo "repo_list10=$(cat repo_list10.txt)" >> $GITHUB_OUTPUT
+      - name: Set outputs dynamically
+        id: set-outputs
+        run: |
+          repo_lists=""
+          for i in {1..10}; do
+            repo_list=$(cat repo_list$i.txt)
+            repo_lists+="$repo_list "
+          done
+          repo_lists=$(echo "$repo_lists" | xargs | jq -R -c 'split(" ")')
+          echo "repo_lists=$repo_lists" >> $GITHUB_OUTPUT
 
   sync-repos:
     strategy:
       matrix:
-        chunk: ['${{ needs.get-repo-list.outputs.output1 }}', '${{ needs.get-repo-list.outputs.output2 }}', '${{ needs.get-repo-list.outputs.output3 }}', '${{ needs.get-repo-list.outputs.output4 }}', '${{ needs.get-repo-list.outputs.output5 }}', '${{ needs.get-repo-list.outputs.output6 }}', '${{ needs.get-repo-list.outputs.output7 }}', '${{ needs.get-repo-list.outputs.output8 }}', '${{ needs.get-repo-list.outputs.output9 }}', '${{ needs.get-repo-list.outputs.output10 }}']
+        chunk: ${{ fromJSON(needs.get-repo-list.outputs.repo_lists) }}
     env:
       dst_token: ${{ secrets.TOKEN }}
     runs-on: mirror-runner
