@@ -23,7 +23,7 @@ jobs:
     continue-on-error: true  # Continue the workflow even if one job fails
     steps:
       - name: Sync ${{ matrix.repo }}  # Step name dynamically based on the repository being synced
-        uses: Stefan-Schmidt/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
+        uses: eclipse-oniro4openharmony/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
         with:
           src: gitee/openharmony  # Source organization on Gitee
           dst: github/eclipse-oniro-mirrors  # Destination organization on GitHub

@@ -48,7 +48,7 @@ jobs:
       - name: Test env
         run: |
           echo ${{ matrix.chunk }}
-      - uses: Stefan-Schmidt/hub-mirror-action@master
+      - uses: eclipse-oniro4openharmony/hub-mirror-action@master
         with:
           src: gitee/openharmony
           dst: github/eclipse-oniro-mirrors
