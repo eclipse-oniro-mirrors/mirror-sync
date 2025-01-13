@@ -33,7 +33,15 @@ jobs:
           - OpenHarmony-5.0.0-Release
           - OpenHarmony-3.2-Release
           - OpenHarmony-4.1-Release
-    continue-on-error: true  # Continue the workflow even if one job fails
+        exclude:
+          - repo: developtools_smartperf_host
+            branch: OpenHarmony-3.2-Release
+          - repo: multimedia_av_codec
+            branch: OpenHarmony-3.2-Release
+          - repo: kernel_linux_6.6
+            branch: OpenHarmony-3.2-Release
+          - repo: kernel_linux_6.6
+            branch: OpenHarmony-4.1-Release
     steps:
       - name: Sync ${{ matrix.repo }} - ${{ matrix.branch }}  # Step name dynamically based on the repository and branch being synced
         uses: eclipse-oniro4openharmony/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
