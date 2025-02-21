@@ -1,13 +1,8 @@
 name: Mirror large repositories
 
 on:
-  # for testing purposes also enable manual triggering
+  # Enable manual triggering
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   # Use a matrix strategy to sync multiple repositories in parallel
@@ -30,18 +25,7 @@ jobs:
           - xts_acts
           - kernel_linux_6.6
         branch:  # List of branches to sync
-          - OpenHarmony-5.0.0-Release
-          - OpenHarmony-3.2-Release
-          - OpenHarmony-4.1-Release
-        exclude:
-          - repo: developtools_smartperf_host
-            branch: OpenHarmony-3.2-Release
-          - repo: multimedia_av_codec
-            branch: OpenHarmony-3.2-Release
-          - repo: kernel_linux_6.6
-            branch: OpenHarmony-3.2-Release
-          - repo: kernel_linux_6.6
-            branch: OpenHarmony-4.1-Release
+          - OpenHarmony-5.0.2-Release
     steps:
       - name: Sync ${{ matrix.repo }} - ${{ matrix.branch }}  # Step name dynamically based on the repository and branch being synced
         uses: eclipse-oniro4openharmony/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
