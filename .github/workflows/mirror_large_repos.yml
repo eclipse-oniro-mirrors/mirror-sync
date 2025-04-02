@@ -25,7 +25,8 @@ jobs:
           - xts_acts
           - kernel_linux_6.6
         branch:  # List of branches to sync
-          - OpenHarmony-5.0.2-Release
+          - OpenHarmony-5.0.3-Release
+          - master
     steps:
       - name: Sync ${{ matrix.repo }} - ${{ matrix.branch }}  # Step name dynamically based on the repository and branch being synced
         uses: eclipse-oniro4openharmony/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
