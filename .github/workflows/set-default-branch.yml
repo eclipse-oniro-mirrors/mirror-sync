@@ -1,0 +1,46 @@
+name: Set Default Branch to Master for All Org Repos
+
+on:
+  workflow_dispatch:
+
+jobs:
+  set-default-branch:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.TOKEN }}
+      ORG: eclipse-oniro-mirrors
+      DEFAULT_BRANCH: master
+    steps:
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: List all repositories in the org
+        id: list-repos
+        run: |
+          > repos.txt
+          page=1
+          while :; do
+            echo "Fetching page $page of repositories..."
+            repos=$(curl -s -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/orgs/$ORG/repos?per_page=100&page=$page" | jq -r '.[].name')
+            [ -z "$repos" ] && break
+            count=$(echo "$repos" | wc -l)
+            echo "Found $count repositories on page $page"
+            echo "$repos" >> repos.txt
+            [ $count -lt 100 ] && break
+            page=$((page+1))
+          done
+          total=$(wc -l < repos.txt)
+          echo "Total repositories collected: $total"
+      - name: Set default branch to master for each repo
+        run: |
+          total=$(wc -l < repos.txt)
+          i=1
+          while read repo; do
+            echo "[$i/$total] Setting default branch to $DEFAULT_BRANCH for $repo"
+            curl -s -X PATCH \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$ORG/$repo" \
+              -d '{"default_branch":"'$DEFAULT_BRANCH'"}'
+            i=$((i+1))
+          done < repos.txt
