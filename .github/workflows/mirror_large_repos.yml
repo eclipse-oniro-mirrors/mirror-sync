@@ -25,7 +25,7 @@ jobs:
           - xts_acts
           - kernel_linux_6.6
         branch:  # List of branches to sync
-          - OpenHarmony-5.0.3-Release
+          - OpenHarmony-5.1.0-Release
           - master
     steps:
       - name: Sync ${{ matrix.repo }} - ${{ matrix.branch }}  # Step name dynamically based on the repository and branch being synced

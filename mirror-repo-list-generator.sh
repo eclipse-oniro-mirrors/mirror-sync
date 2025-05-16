@@ -7,8 +7,10 @@
 # each, and consolidates them into a single file containing a unique list of 
 # repositories without duplicates.
 
+set -x;
+
 # Define branch names and output file
-branches=("OpenHarmony-3.2-Release" "OpenHarmony-4.0-Release" "OpenHarmony-4.1-Release" "OpenHarmony-5.0.0-Release")
+branches=("OpenHarmony-3.2-Release" "OpenHarmony-4.0-Release" "OpenHarmony-4.1-Release" "OpenHarmony-5.0.0-Release" "OpenHarmony-5.0.2-Release" "OpenHarmony-5.0.3-Release" "OpenHarmony-5.1.0-Release")
 output_file="repo-list.txt"
 
 # Create a new directory for the repository initialization

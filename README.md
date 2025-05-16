@@ -17,7 +17,6 @@ If you are interested in contributing to active development, please visit [Eclip
 
 #### `mirror-repo-list-generator.sh`
 A script to generate a list of unique repositories required by the OpenHarmony build system across multiple release branches:
-- **Branches supported**: `OpenHarmony-3.2-Release`, `OpenHarmony-4.0-Release`, `OpenHarmony-4.1-Release`, and `OpenHarmony-5.0.0-Release`.
 - Outputs: A consolidated list of unique repositories (`repo-list.txt`).
 
 ### Workflows
