@@ -1,0 +1,100 @@
+name: Mirror OpenHarmony from GitCode to GitHub
+on:
+  # Run daily at 12:00 UTC
+  schedule:
+    - cron: '0 12 * * *'
+  # for testing purposes also enable manual triggering
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  get-repo-list:
+    env:
+      dst_token: ${{ secrets.TOKEN }}
+      parallel_jobs: 20
+    runs-on: mirror-runner
+    outputs:
+      repo_lists: ${{ steps.set-outputs.outputs.repo_lists }}
+    steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v4
+        
+      - name: Install repo tool
+        run: |
+          if [ ! -f ~/bin/repo ]; then
+            mkdir -p ~/bin
+            curl https://storage.googleapis.com/git-repo-downloads/repo -o ~/bin/repo
+            chmod a+x ~/bin/repo
+            echo "$HOME/bin" >> $GITHUB_PATH
+          fi
+          
+      - name: Generate repository list from GitCode
+        run: |
+          set -x
+          
+          # Create a new directory for the repository initialization
+          mkdir -p openharmony_repos
+          cd openharmony_repos || exit
+          
+          # Initialize repo for the master branch only
+          mkdir -p master
+          cd master || exit
+          repo init -u https://gitcode.com/openharmony/manifest.git -b master --no-repo-verify
+          
+          # List repositories and save to file
+          repo list -a -n > ../temp_repos.txt
+          
+          # Go back to the base directory
+          cd ..
+          
+          # Convert to comma-separated format and save to the output file
+          paste -sd, temp_repos.txt > ../repo-list.txt
+          
+          # Cleanup temporary file
+          rm temp_repos.txt
+          
+          echo "The repository list has been generated from GitCode master branch."
+          
+      - name: Split list into chunks
+        run: cat repo-list.txt | .github/workflows/split-list.py ${{ env.parallel_jobs }}
+        
+      - name: Set outputs dynamically
+        id: set-outputs
+        run: |
+          repo_lists=""
+          for i in $(seq 1 ${{ env.parallel_jobs }}); do
+            if [ -f repo_list$i.txt ]; then
+              repo_list=$(cat repo_list$i.txt)
+              repo_lists+="$repo_list "
+            fi
+          done
+          repo_lists=$(echo "$repo_lists" | xargs | jq -R -c 'split(" ")')
+          echo "repo_lists=$repo_lists" >> $GITHUB_OUTPUT
+
+  sync-repos:
+    strategy:
+      matrix:
+        chunk: ${{ fromJSON(needs.get-repo-list.outputs.repo_lists) }}
+    env:
+      dst_token: ${{ secrets.TOKEN }}
+    runs-on: mirror-runner
+    needs: get-repo-list
+    steps:
+      - name: Test env
+        run: |
+          echo ${{ matrix.chunk }}
+      - uses: eclipse-oniro4openharmony/hub-mirror-action@master
+        with:
+          src: gitcode/openharmony
+          dst: github/eclipse-oniro-mirrors
+          dst_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          dst_token: ${{ secrets.TOKEN }}
+          src_account_type: org
+          dst_account_type: org
+          force_update: true
+          static_list: "${{ matrix.chunk }}"
+          lfs: true
+          timeout: '30m'
