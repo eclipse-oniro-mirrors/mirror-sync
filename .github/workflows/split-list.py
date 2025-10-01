@@ -16,9 +16,9 @@ except ValueError as e:
     print("Error: {}".format(e))
     sys.exit(1)
 
-iput = sys.stdin.read()
+iput = sys.stdin.read().strip()
 
-lst = iput.split(",")
+lst = [repo.strip() for repo in iput.split(",") if repo.strip()]
 
 # Repos with files over 100 MB -> error: GH001: Large files detected
 lst.remove("developtools_profiler")
