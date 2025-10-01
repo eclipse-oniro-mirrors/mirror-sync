@@ -28,6 +28,7 @@ lst.remove("global_i18n")
 lst.remove("third_party_mindspore")
 lst.remove("multimedia_audio_framework")
 lst.remove("multimedia_av_codec")
+lst.remove("third_party_rust_rust")
 
 # error: GH008: Your push referenced at least 1 unknown Git LFS object
 lst.remove("device_board_hihope")
