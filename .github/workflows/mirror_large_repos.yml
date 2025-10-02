@@ -32,7 +32,7 @@ jobs:
       - name: Sync ${{ matrix.repo }} - ${{ matrix.branch }}  # Step name dynamically based on the repository and branch being synced
         uses: eclipse-oniro4openharmony/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
         with:
-          src: gitee/openharmony  # Source organization on Gitee
+          src: gitcode/openharmony  # Source organization on Gitee
           dst: github/eclipse-oniro-mirrors  # Destination organization on GitHub
           static_list: ${{ matrix.repo }}  # Static list specifying the repository to sync
           dst_key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key for authentication
