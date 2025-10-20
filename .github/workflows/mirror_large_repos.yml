@@ -25,6 +25,7 @@ jobs:
           - xts_acts
           - kernel_linux_6.6
           - third_party_rust_rust
+          - kernel_linux_5.10
         branch:  # List of branches to sync
           - OpenHarmony-6.0-Release
           - master

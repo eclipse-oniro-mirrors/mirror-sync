@@ -48,6 +48,9 @@ lst.remove("docs")
 # fatal: pack exceeds maximum allowed size (2.00 GiB)   
 lst.remove("kernel_linux_6.6")
 
+# Timeout
+lst.remove("kernel_linux_5.10")
+
 n = 1
 size = ceil(len(lst) / chunks)
 print("%d chunks with a chunk size of %d" % (chunks, size))
