@@ -42,14 +42,12 @@ lst.remove("update_updater")
 # LFS upload to github failed
 lst.remove("xts_acts")
 
-# Timeout gitee clone
+# Timeout
 lst.remove("docs")
+lst.remove("kernel_linux_5.10")
 
 # fatal: pack exceeds maximum allowed size (2.00 GiB)   
 lst.remove("kernel_linux_6.6")
-
-# Timeout
-lst.remove("kernel_linux_5.10")
 
 n = 1
 size = ceil(len(lst) / chunks)

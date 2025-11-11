@@ -1,6 +1,6 @@
 # OpenHarmony Mirror Sync Workflows 
 
-This repository mirrors all repositories from [the OpenHarmony organization on Gitee](https://gitee.com/openharmony/docs). These mirrored repositories are **read-only** and are consumed by the Eclipse Oniro build system.
+This repository mirrors the repositories from the [OpenHarmony organization on GitCode](https://gitcode.com/openharmony/). These mirrored repositories are **read-only** and are consumed by the Eclipse Oniro build system.
 
 ## Objective
 
@@ -23,7 +23,7 @@ A script to generate a list of unique repositories required by the OpenHarmony b
 
 #### `.github/workflows/mirror_large_repos.yml`
 A GitHub Actions workflow that:
-- Mirrors large Gitee repositories with shallow cloning.
+- Mirrors large GitCode repositories with shallow cloning.
 - Tracks files exceeding GitHub's 100MB limit using Git LFS.
 
 #### `.github/workflows/split-list.py`
@@ -31,11 +31,11 @@ A Python script that:
 - Divides a list of repositories into smaller chunks for parallel processing.
 - Filters out problematic repositories to improve mirroring reliability.
 
-#### `.github/workflows/main.yml`
+#### `.github/workflows/mirror_gitcode.yml`
 The main CI workflow that:
 1. Retrieves and processes the list of repositories to be mirrored.
 2. Splits the workload into chunks for parallel execution.
-3. Mirrors repositories from Gitee to GitHub.
+3. Mirrors repositories from GitCode to GitHub.
 
 ## Key Features
 

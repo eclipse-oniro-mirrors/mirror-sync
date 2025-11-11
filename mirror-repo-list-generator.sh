@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script retrieves all Gitee repositories required by the OpenHarmony repo manifest 
+# This script retrieves all GitCode repositories required by the OpenHarmony repo manifest 
 # across multiple release branches. Specifically, it initializes the `repo` environment 
 # for each specified release branch (OpenHarmony-3.2-Release, OpenHarmony-4.0-Release, 
 # OpenHarmony-4.1-Release, and OpenHarmony-5.0.0-Release), lists the repositories for 
@@ -25,7 +25,7 @@ for branch_name in "${branches[@]}"; do
     # Initialize repo for the current branch
     mkdir -p "$branch_name"
     cd "$branch_name" || exit
-    repo init -u https://gitee.com/openharmony/manifest.git -b "$branch_name" --no-repo-verify
+    repo init -u https://gitcode.com/openharmony/manifest.git -b "$branch_name" --no-repo-verify
 
     # List repositories and append to a temporary file
     repo list -a -n >> "../temp_repos.txt"
