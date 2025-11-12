@@ -3,12 +3,25 @@ name: Mirror large repositories
 on:
   # Enable manual triggering
   workflow_dispatch:
+    inputs:
+      sync_mode:
+        description: 'Sync mode to use'
+        required: true
+        default: 'shallow'
+        type: choice
+        options:
+          - shallow
+          - full
+          - both
 
 jobs:
   # Use a matrix strategy to sync multiple repositories in parallel
-  sync-repos:
+  # First attempt with shallow clone for faster sync
+  sync-repos-shallow:
+    if: ${{ inputs.sync_mode == 'shallow' || inputs.sync_mode == 'both' }}
     runs-on: mirror-runner
     strategy:
+      fail-fast: false
       matrix:
         repo:  # List of repositories to sync
           - developtools_profiler
@@ -42,6 +55,46 @@ jobs:
           dst_account_type: org  # Destination account type is an organization
           force_update: true  # Force update the destination repository
           lfs: true  # Enable Git LFS (Large File Storage) for the repository
-          timeout: '60m'  # Set timeout for the sync operation to 60 minutes
+          timeout: '30m'  # Set timeout for the sync operation to 60 minutes
           branch: ${{ matrix.branch }}  # clone a specific branch
           shallow_clone: true # clone only the last commit
+
+  # Second attempt with complete clone (no shallow_clone) for repositories that need full history
+  # All branches are mirrored automatically with full clone
+  sync-repos-full:
+    if: ${{ inputs.sync_mode == 'full' || inputs.sync_mode == 'both' }}
+    runs-on: mirror-runner
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:  # List of repositories to sync
+          - developtools_profiler
+          - developtools_smartperf_host
+          - device_soc_rockchip
+          - global_i18n
+          - third_party_mindspore
+          - multimedia_audio_framework
+          - multimedia_av_codec
+          - device_board_hihope
+          - docs
+          - third_party_vk-gl-cts
+          - update_updater
+          - xts_acts
+          - kernel_linux_6.6
+          - third_party_rust_rust
+          - kernel_linux_5.10
+    steps:
+      - name: Sync ${{ matrix.repo }} (Full Clone - All Branches)  # Step name dynamically based on the repository being synced
+        uses: eclipse-oniro4openharmony/hub-mirror-action@master  # Use the hub-mirror-action to mirror repositories
+        with:
+          src: gitcode/openharmony  # Source organization on GitCode
+          dst: github/eclipse-oniro-mirrors  # Destination organization on GitHub
+          static_list: ${{ matrix.repo }}  # Static list specifying the repository to sync
+          dst_key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key for authentication
+          dst_token: ${{ secrets.TOKEN }}  # Access token for the destination GitHub repository
+          src_account_type: org  # Source account type is an organization
+          dst_account_type: org  # Destination account type is an organization
+          force_update: true  # Force update the destination repository
+          lfs: true  # Enable Git LFS (Large File Storage) for the repository
+          timeout: '30m'  # Set timeout for the sync operation to 60 minutes
+          # No branch or shallow_clone parameter - mirrors all branches with complete history
