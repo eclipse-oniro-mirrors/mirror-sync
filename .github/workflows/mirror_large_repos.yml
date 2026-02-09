@@ -40,7 +40,7 @@ jobs:
           - third_party_rust_rust
           - kernel_linux_5.10
         branch:  # List of branches to sync
-          - OpenHarmony-6.0-Release
+          - OpenHarmony-6.1-Release
           - master
     steps:
       - name: Sync ${{ matrix.repo }} - ${{ matrix.branch }}  # Step name dynamically based on the repository and branch being synced
