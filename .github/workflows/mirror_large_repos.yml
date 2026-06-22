@@ -31,7 +31,6 @@ jobs:
           - third_party_mindspore
           - multimedia_audio_framework
           - multimedia_av_codec
-          - device_board_hihope
           - docs
           - third_party_vk-gl-cts
           - update_updater
@@ -75,7 +74,6 @@ jobs:
           - third_party_mindspore
           - multimedia_audio_framework
           - multimedia_av_codec
-          - device_board_hihope
           - docs
           - third_party_vk-gl-cts
           - update_updater

@@ -30,16 +30,16 @@ lst.remove("multimedia_audio_framework")
 lst.remove("multimedia_av_codec")
 lst.remove("third_party_rust_rust")
 
-# error: GH008: Your push referenced at least 1 unknown Git LFS object
-lst.remove("device_board_hihope")
-
 # send-pack: unexpected disconnect while reading sideband packet
 lst.remove("third_party_vk-gl-cts")
 
 # fatal: destination path '/github/workspace/hub-mirror-cache/update_updater' already exists and is not an empty directory.'
 lst.remove("update_updater")
 
-# LFS upload to github failed
+# error: GH001: Large files detected -- a 101 MB test resource (101mb.bmp) is
+# committed directly to git history (not LFS), exceeding GitHub's 100 MB limit,
+# so a full-history push is rejected. Mirrored via shallow mode only, where the
+# action rewrites >100 MB files into LFS.
 lst.remove("xts_acts")
 
 # Timeout
