@@ -76,6 +76,9 @@ jobs:
 
   sync-repos:
     strategy:
+      # Don't cancel the other chunks (and fail the whole run) when a single
+      # repo fails to mirror — keep mirroring everything else.
+      fail-fast: false
       matrix:
         chunk: ${{ fromJSON(needs.get-repo-list.outputs.repo_lists) }}
     env:
