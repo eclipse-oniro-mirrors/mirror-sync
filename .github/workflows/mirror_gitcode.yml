@@ -38,25 +38,29 @@ jobs:
           # Create a new directory for the repository initialization
           mkdir -p openharmony_repos
           cd openharmony_repos || exit
-          
-          # Initialize repo for the master branch only
-          mkdir -p master
-          cd master || exit
-          repo init -u https://gitcode.com/openharmony/manifest.git -b master --no-repo-verify
-          
-          # List repositories and save to file
-          repo list -a -n > ../temp_repos.txt
-          
-          # Go back to the base directory
-          cd ..
-          
-          # Convert to comma-separated format and save to the output file
-          paste -sd, temp_repos.txt > ../repo-list.txt
-          
+
+          # Enumerate repos from each manifest branch and merge the lists
+          branches="master OpenHarmony-6.1-LTS OpenHarmony-7.0-Release"
+          rm -f temp_repos.txt
+          for branch in $branches; do
+            mkdir -p "$branch"
+            cd "$branch" || exit
+            repo init -u https://gitcode.com/openharmony/manifest.git -b "$branch" --no-repo-verify
+
+            # List repositories and append to the merged file
+            repo list -a -n >> ../temp_repos.txt
+
+            # Go back to the base directory
+            cd ..
+          done
+
+          # Deduplicate, convert to comma-separated format and save to the output file
+          sort -u temp_repos.txt | paste -sd, - > ../repo-list.txt
+
           # Cleanup temporary file
           rm temp_repos.txt
-          
-          echo "The repository list has been generated from GitCode master branch."
+
+          echo "The repository list has been generated from GitCode branches: $branches"
           
       - name: Split list into chunks
         run: cat repo-list.txt | .github/workflows/split-list.py ${{ env.parallel_jobs }}
