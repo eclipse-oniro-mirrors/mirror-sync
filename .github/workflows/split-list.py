@@ -51,10 +51,11 @@ lst.remove("kernel_linux_6.6")
 
 # Hosted on gitcode.com/openharmony-sig instead of gitcode.com/openharmony
 # (remote="sig" in the OpenHarmony-6.1-LTS manifest), so cloning them from the
-# openharmony org 403s. Deliberately not mirrored.
-lst.remove("device_board_bearkey")
-lst.remove("vendor_bearkey")
-lst.remove("device_soc_phytium")
+# openharmony org 403s. Deliberately not mirrored. Upstream dropped them from
+# chipsets/all.xml on 2026-09-17, so tolerate their absence in case they return.
+for sig_repo in ("device_board_bearkey", "vendor_bearkey", "device_soc_phytium"):
+    if sig_repo in lst:
+        lst.remove(sig_repo)
 
 n = 1
 size = ceil(len(lst) / chunks)
